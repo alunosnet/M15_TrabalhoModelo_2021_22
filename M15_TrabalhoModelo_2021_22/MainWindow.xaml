@@ -1,0 +1,21 @@
+﻿<Window x:Class="M15_TrabalhoModelo_2021_22.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:M15_TrabalhoModelo_2021_22"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Menu HorizontalAlignment="left" Width="100">
+            <MenuItem Width="100" Header="Leitores" Click="MenuItem_Click"></MenuItem>
+            <MenuItem Width="100" Header="Livros"></MenuItem>
+            <MenuItem Width="100" Header="Empréstimos"></MenuItem>
+            <MenuItem Width="100" Header="Consultas"></MenuItem>
+            <MenuItem Width="100" Header="Sair" Click="MenuItem_Click_1"></MenuItem>
+        </Menu>
+        <DockPanel Margin="100,0,0,0">
+            <Frame Name="_NavigationFrame" NavigationUIVisibility="Hidden"/>
+        </DockPanel>
+    </Grid>
+</Window>
