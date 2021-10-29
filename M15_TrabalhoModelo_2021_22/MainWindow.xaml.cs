@@ -1,4 +1,5 @@
 ﻿using M15_TrabalhoModelo_2021_22.Leitores;
+using M15_TrabalhoModelo_2021_22.Livros;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,12 @@ namespace M15_TrabalhoModelo_2021_22
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
             App.Current.Shutdown();
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            _NavigationFrame.Content = new Livro(bd);
+
         }
     }
 }

@@ -9,7 +9,7 @@
     <Grid>
         <Menu HorizontalAlignment="left" Width="100">
             <MenuItem Width="100" Header="Leitores" Click="MenuItem_Click"></MenuItem>
-            <MenuItem Width="100" Header="Livros"></MenuItem>
+            <MenuItem Width="100" Header="Livros" Click="MenuItem_Click_2"></MenuItem>
             <MenuItem Width="100" Header="Empréstimos"></MenuItem>
             <MenuItem Width="100" Header="Consultas"></MenuItem>
             <MenuItem Width="100" Header="Sair" Click="MenuItem_Click_1"></MenuItem>

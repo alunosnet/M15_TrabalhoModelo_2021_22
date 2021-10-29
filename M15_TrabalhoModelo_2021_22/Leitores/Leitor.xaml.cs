@@ -25,7 +25,17 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
         {
             InitializeComponent();
             this.bd = bd;
+            //esconder os botões
+            btAtualizar.Visibility = Visibility.Hidden;
+            btRemover.Visibility = Visibility.Hidden;
+            AtualizaGrid();
         }
+
+        private void AtualizaGrid()
+        {
+            DGLeitores.ItemsSource = C_Leitor.ListarTodos(bd);
+        }
+
         //fotografia
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -59,7 +69,7 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
             //limpar form
             LimparForm();
             //atualizar a grid
-
+            AtualizaGrid();
         }
 
         private void LimparForm()
@@ -68,6 +78,61 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
             ImgFoto.Tag = "";
             tbNome.Text = "";
 
+            btRemover.Visibility = Visibility.Hidden;
+            btAtualizar.Visibility = Visibility.Hidden;
+            btAdicionar.Visibility = Visibility.Visible;
+            DGLeitores.SelectedItem = null;
+        }
+
+        private void DGLeitores_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //mostrar os dados do leitor selecionado
+            C_Leitor lt = (C_Leitor)DGLeitores.SelectedItem;
+            if (lt == null) return;
+            tbNome.Text = lt.nome;
+            DPData.SelectedDate = lt.data_nascimento;
+            string ficheiro = Utils.pastaDoPrograma() + @"\temp.jpg";
+            Utils.VetorParaImagem(lt.fotografia, ficheiro);
+            BitmapImage img = new BitmapImage();
+            img.BeginInit();
+            img.CacheOption = BitmapCacheOption.OnLoad;
+            img.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            img.UriSource = new Uri(ficheiro);
+            img.EndInit();
+            ImgFoto.Source = img;
+
+            File.Delete(ficheiro);
+            //mostrar botões
+            btRemover.Visibility = Visibility.Visible;
+            btAtualizar.Visibility = Visibility.Visible;
+            btAdicionar.Visibility = Visibility.Hidden;
+        }
+
+        private void btRemover_Click(object sender, RoutedEventArgs e)
+        {
+            C_Leitor lt = (C_Leitor)DGLeitores.SelectedItem;
+            if (lt == null) return;
+            C_Leitor.Remover(bd, lt.nleitor);
+            LimparForm();
+            AtualizaGrid();
+        }
+
+        private void btAtualizar_Click(object sender, RoutedEventArgs e)
+        {
+            C_Leitor lt = (C_Leitor)DGLeitores.SelectedItem;
+            if (lt == null) return;
+            lt.nome = tbNome.Text;
+            lt.data_nascimento = DPData.SelectedDate.Value;
+            if (ImgFoto.Tag != null)
+                lt.fotografia = Utils.ImagemParaVetor(ImgFoto.Tag.ToString());
+            lt.Atualizar(bd);
+            LimparForm();
+            AtualizaGrid();
+        }
+
+        private void btCancelar_Click(object sender, RoutedEventArgs e)
+        {
+            LimparForm();
         }
     }
 }

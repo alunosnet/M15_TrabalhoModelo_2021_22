@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Text;
@@ -80,6 +81,20 @@ namespace M15_TrabalhoModelo_2021_22
                 comando.Parameters.AddRange(parametros.ToArray());
             comando.ExecuteNonQuery();
             comando.Dispose();
+        }
+        public DataTable devolveSQL(string strSQL,List<SqlParameter> parametros=null)
+        {
+            SqlCommand comando = new SqlCommand(strSQL, ligacaoBD);
+            if (parametros != null)
+                comando.Parameters.AddRange(parametros.ToArray());
+            DataTable dados = new DataTable();
+            SqlDataReader registos = comando.ExecuteReader();
+            dados.Load(registos);
+            registos.Close();
+            registos = null;
+            comando.Dispose();
+
+            return dados;
         }
     }
 }
