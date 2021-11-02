@@ -25,6 +25,8 @@ namespace M15_TrabalhoModelo_2021_22.Livros
         {
             InitializeComponent();
             this.bd = bd;
+            AtualizaGrid();
+            LimparForm();
         }
         //imagem
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -50,7 +52,11 @@ namespace M15_TrabalhoModelo_2021_22.Livros
             tbNome.Text = "";
             tbAno.Text = "";
             tbPreco.Text = "";
-            
+
+            btRemover.Visibility = Visibility.Hidden;
+            btAtualizar.Visibility = Visibility.Hidden;
+            btAdicionar.Visibility = Visibility.Visible;
+            DGLivros.SelectedItem = null;
         }
 
         private void btAdicionar_Click(object sender, RoutedEventArgs e)
@@ -89,6 +95,80 @@ namespace M15_TrabalhoModelo_2021_22.Livros
                     File.Copy(ficheiro, capa);
             }
             //limpar form
+            LimparForm();
+            AtualizaGrid();
+        }
+        private void AtualizaGrid()
+        {
+            DGLivros.ItemsSource = C_Livro.ListarTodos(bd);
+        }
+        private void DGLivros_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //mostrar os dados do leitor selecionado
+            C_Livro lv = (C_Livro)DGLivros.SelectedItem;
+            if (lv == null) return;
+            tbNome.Text = lv.nome;
+            tbPreco.Text = lv.preco.ToString();
+            tbAno.Text = lv.ano.ToString();
+            DPData.SelectedDate = lv.data_aquisicao;
+            if (File.Exists(lv.capa))
+            {
+                BitmapImage img = new BitmapImage();
+                img.BeginInit();
+                img.CacheOption = BitmapCacheOption.OnLoad;
+                img.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                img.UriSource = new Uri(lv.capa);
+                img.EndInit();
+                ImgCapa.Source = img;
+            }
+            //mostrar botões
+            btRemover.Visibility = Visibility.Visible;
+            btAtualizar.Visibility = Visibility.Visible;
+            btAdicionar.Visibility = Visibility.Hidden;
+        }
+
+        private void btRemover_Click(object sender, RoutedEventArgs e)
+        {
+            C_Livro lv = (C_Livro)DGLivros.SelectedItem;
+            if (lv == null) return;
+            //apagar ficheiro da capa
+            if (File.Exists(lv.capa))
+            {
+                File.Delete(lv.capa);
+            }
+            C_Livro.Remover(bd, lv.nlivro);
+            LimparForm();
+            AtualizaGrid();
+        }
+
+        private void btAtualizar_Click(object sender, RoutedEventArgs e)
+        {
+            C_Livro lv = (C_Livro)DGLivros.SelectedItem;
+            if (lv == null) return;
+            lv.nome = tbNome.Text;
+            lv.ano = int.Parse(tbAno.Text);
+            lv.data_aquisicao = DPData.SelectedDate.Value;
+            lv.preco = decimal.Parse(tbPreco.Text);
+            if (ImgCapa.Tag != null && ImgCapa.Tag.ToString() != "")
+            {
+                Guid guid = Guid.NewGuid();
+                string capa = Utils.pastaDoPrograma() + @"\" + guid.ToString();
+                //apagar ficheiro da capa
+                if (File.Exists(lv.capa))
+                {
+                    File.Delete(lv.capa);
+                }
+                lv.capa = capa;
+                if (File.Exists(ImgCapa.Tag.ToString()))
+                    File.Copy(ImgCapa.Tag.ToString(), capa);
+            }
+            lv.Atualizar(bd);
+            LimparForm();
+            AtualizaGrid();
+        }
+
+        private void btCancelar_Click(object sender, RoutedEventArgs e)
+        {
             LimparForm();
         }
     }

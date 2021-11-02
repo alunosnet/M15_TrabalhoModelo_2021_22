@@ -131,7 +131,7 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
                     Value="%"+nomePesquisar+"%"
                 }
             };
-            var dados = bd.devolveSQL(sql);
+            var dados = bd.devolveSQL(sql,parametros);
             foreach (DataRow linha in dados.Rows)
             {
                 int nleitor = int.Parse(linha["nleitor"].ToString());
@@ -145,8 +145,34 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
             return lista;
         }
         //listar paginado
-
+        public static List<C_Leitor> ListarTodos(BaseDados bd,int primeiro,
+            int ultimo)
+        {
+            List<C_Leitor> lista = new List<C_Leitor>();
+            string sql = $@"SELECT nleitor,nome,data_nasc,fotografia,estado
+                            FROM (SELECT row_number() over (order by nome) as num,
+                                nleitor,nome,data_nasc,fotografia,estado
+                                FROM Leitores) as p
+                            WHERE num>={primeiro} AND num<={ultimo}";
+            var dados = bd.devolveSQL(sql);
+            foreach (DataRow linha in dados.Rows)
+            {
+                int nleitor = int.Parse(linha["nleitor"].ToString());
+                string nome = linha["nome"].ToString();
+                DateTime data = DateTime.Parse(linha["data_nasc"].ToString());
+                byte[] fotografia = (byte[])linha["fotografia"];
+                bool estado = bool.Parse(linha["estado"].ToString());
+                C_Leitor novo = new C_Leitor(nleitor, nome, data, fotografia, estado);
+                lista.Add(novo);
+            }
+            return lista;
+        }
         //nr de leitores
-
+        public static int NrLeitores(BaseDados bd)
+        {
+            DataTable dados = bd.devolveSQL("Select count(*) FROM Leitores");
+            int nr = int.Parse(dados.Rows[0][0].ToString());
+            return nr;
+        }
     }
 }

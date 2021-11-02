@@ -21,6 +21,7 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
     public partial class Leitor : Page
     {
         BaseDados bd;
+        int NrRegistosPorPagina = 5;
         public Leitor(BaseDados bd)
         {
             InitializeComponent();
@@ -29,11 +30,29 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
             btAtualizar.Visibility = Visibility.Hidden;
             btRemover.Visibility = Visibility.Hidden;
             AtualizaGrid();
+            ContarPaginas();
         }
+        void ContarPaginas()
+        {
+            decimal npaginas = Math.Ceiling((decimal)C_Leitor.NrLeitores(bd) / NrRegistosPorPagina);
+            cbPaginacao.Items.Clear();
+            for (int i = 1; i <= npaginas; i++)
+                cbPaginacao.Items.Add(i);
 
+        }
         private void AtualizaGrid()
         {
-            DGLeitores.ItemsSource = C_Leitor.ListarTodos(bd);
+            if(cbPaginacao.SelectedItem==null)
+                DGLeitores.ItemsSource = C_Leitor.ListarTodos(bd);
+            else
+            {
+                //paginar
+                int pagina=int.Parse(cbPaginacao.SelectedItem.ToString());
+                int primeiro = (pagina - 1) * NrRegistosPorPagina;
+                DGLeitores.ItemsSource = C_Leitor.ListarTodos(bd, 
+                    primeiro + 1, primeiro + NrRegistosPorPagina);
+            }
+            
         }
 
         //fotografia
@@ -57,6 +76,11 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             //validar os dados
+            if(ImgFoto.Tag==null || ImgFoto.Tag.ToString()=="")
+            {
+                MessageBox.Show("Tem de indicar uma foto");
+                return;
+            }
             string nome = tbNome.Text;
             DateTime data = DPData.SelectedDate.Value;
             var foto = Utils.ImagemParaVetor(ImgFoto.Tag.ToString());
@@ -70,6 +94,7 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
             LimparForm();
             //atualizar a grid
             AtualizaGrid();
+            ContarPaginas();
         }
 
         private void LimparForm()
@@ -115,6 +140,7 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
             C_Leitor.Remover(bd, lt.nleitor);
             LimparForm();
             AtualizaGrid();
+            ContarPaginas();
         }
 
         private void btAtualizar_Click(object sender, RoutedEventArgs e)
@@ -123,7 +149,7 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
             if (lt == null) return;
             lt.nome = tbNome.Text;
             lt.data_nascimento = DPData.SelectedDate.Value;
-            if (ImgFoto.Tag != null)
+            if (ImgFoto.Tag != null && ImgFoto.Tag.ToString()!="")
                 lt.fotografia = Utils.ImagemParaVetor(ImgFoto.Tag.ToString());
             lt.Atualizar(bd);
             LimparForm();
@@ -133,6 +159,31 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
         private void btCancelar_Click(object sender, RoutedEventArgs e)
         {
             LimparForm();
+        }
+
+        private void tbPesquisa_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DGLeitores.ItemsSource = C_Leitor.PesquisarPorNome(bd, tbPesquisa.Text);
+        }
+
+        private void btImprimir_Click(object sender, RoutedEventArgs e)
+        {
+            Utils.printDG<C_Leitor>(DGLeitores, "Leitores");
+        }
+
+        private void cbPaginacao_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AtualizaGrid();
+        }
+
+        private void DGLeitores_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            DataGridTextColumn col = e.Column as DataGridTextColumn;
+            if(col!=null && e.PropertyType == typeof(DateTime))
+            {
+                if (col.Header.ToString() == "data_nascimento")
+                    col.Binding = new Binding(e.PropertyName) { StringFormat = "dd-MM-yyyy" };
+            }
         }
     }
 }

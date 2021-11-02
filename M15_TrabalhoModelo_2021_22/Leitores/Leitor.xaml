@@ -12,14 +12,23 @@
         <Label Content="Data Nascimento" HorizontalAlignment="Left" Margin="48,71,0,0" VerticalAlignment="Top"/>
         <Label Content="Fotografia" HorizontalAlignment="Left" Margin="48,101,0,0" VerticalAlignment="Top"/>
         <TextBox Name="tbNome" HorizontalAlignment="Left" Margin="154,45,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox TextChanged="tbPesquisa_TextChanged" Name="tbPesquisa" HorizontalAlignment="Left" Margin="300,20,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="400"/>
         <DatePicker Name="DPData" HorizontalAlignment="Left" Margin="154,71,0,0" VerticalAlignment="Top"/>
         <Image x:Name="ImgFoto" HorizontalAlignment="Left" Height="100" Margin="154,110,0,0" VerticalAlignment="Top" Width="100"/>
         <Button Content="..." Click="Button_Click" HorizontalAlignment="Left" Margin="80,191,0,0" VerticalAlignment="Top"/>
         <Button Name="btAdicionar" Content="Adicionar" Click="Button_Click_1" HorizontalAlignment="Left" Margin="80,221,0,0" VerticalAlignment="Top" Height="34" Width="69"/>
-        <DataGrid SelectionChanged="DGLeitores_SelectionChanged" Name="DGLeitores" Width="400" Height="200" VerticalAlignment="Top" HorizontalAlignment="left" Margin="300,60,0,0"  ></DataGrid>
+        <DataGrid AutoGeneratingColumn="DGLeitores_AutoGeneratingColumn" SelectionChanged="DGLeitores_SelectionChanged" Name="DGLeitores" Width="400" Height="200" VerticalAlignment="Top" HorizontalAlignment="left" Margin="300,60,0,0"  >
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Imprimir" Click="btImprimir_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
         <Button Click="btRemover_Click" Name="btRemover" Content="Remover" HorizontalAlignment="left" VerticalAlignment="Top" Margin="300,280,0,0"></Button>
         <Button Click="btAtualizar_Click" Name="btAtualizar" Content="Atualizar" HorizontalAlignment="left" VerticalAlignment="Top" Margin="400,280,0,0"></Button>
         <Button Click="btCancelar_Click" ToolTip="Limpa todos os campos do formulário" Name="btCancelar" Content="Cancelar" HorizontalAlignment="left" VerticalAlignment="Top" Margin="500,280,0,0"></Button>
-        
+        <Button Click="btImprimir_Click" Name="btImprimir" Content="Imprimir" HorizontalAlignment="left" VerticalAlignment="Top" Margin="600,280,0,0"></Button>
+        <ComboBox SelectionChanged="cbPaginacao_SelectionChanged"  Name="cbPaginacao"  HorizontalAlignment="left" VerticalAlignment="Top" Margin="680,280,0,0"></ComboBox>
+    
     </Grid>
 </Page>
