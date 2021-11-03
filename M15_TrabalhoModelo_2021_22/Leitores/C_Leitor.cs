@@ -174,5 +174,10 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
             int nr = int.Parse(dados.Rows[0][0].ToString());
             return nr;
         }
+
+        public override string ToString()
+        {
+            return this.nome;
+        }
     }
 }

@@ -35,6 +35,10 @@ namespace M15_TrabalhoModelo_2021_22
             }
             catch { }
         }
+        public SqlTransaction IniciarTransacao()
+        {
+            return ligacaoBD.BeginTransaction();
+        }
         private void CriarBD()
         {
             ligacaoBD = new SqlConnection(strLigacao);
@@ -74,11 +78,13 @@ namespace M15_TrabalhoModelo_2021_22
             ligacaoBD.Close();
         }
 
-        public void executaSQL(string strSQL,List<SqlParameter> parametros=null)
+        public void executaSQL(string strSQL,List<SqlParameter> parametros=null,SqlTransaction transacao=null)
         {
             SqlCommand comando = new SqlCommand(strSQL, ligacaoBD);
             if (parametros != null)
                 comando.Parameters.AddRange(parametros.ToArray());
+            if (transacao != null)
+                comando.Transaction = transacao;
             comando.ExecuteNonQuery();
             comando.Dispose();
         }

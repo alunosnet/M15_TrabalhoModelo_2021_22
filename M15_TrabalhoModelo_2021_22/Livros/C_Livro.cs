@@ -138,10 +138,12 @@ namespace M15_TrabalhoModelo_2021_22.Livros
             bd.executaSQL(sql, parametros);
         }
         //listar todos
-        public static List<C_Livro> ListarTodos(BaseDados bd)
+        public static List<C_Livro> ListarTodos(BaseDados bd,bool Disponiveis=false)
         {
             List<C_Livro> lista = new List<C_Livro>();
             string sql = "SELECT * FROM Livros ORDER BY Nome";
+            if(Disponiveis==true)
+                sql = "SELECT * FROM Livros WHERE Estado=1 ORDER BY Nome";
             var dados = bd.devolveSQL(sql);
             foreach (DataRow linha in dados.Rows)
             {
@@ -187,6 +189,43 @@ namespace M15_TrabalhoModelo_2021_22.Livros
             }
 
             return lista;
+        }
+
+        //listar paginado
+        public static List<C_Livro> ListarTodos(BaseDados bd, int primeiro,
+            int ultimo)
+        {
+            List<C_Livro> lista = new List<C_Livro>();
+            string sql = $@"SELECT nlivro,nome,ano,data_aquisicao,preco,capa,estado
+                            FROM (SELECT row_number() over (order by nome) as num,
+                                nlivro,nome,ano,data_aquisicao,preco,capa,estado
+                                FROM Livros) as p
+                            WHERE num>={primeiro} AND num<={ultimo}";
+            var dados = bd.devolveSQL(sql);
+            foreach (DataRow linha in dados.Rows)
+            {
+                int nlivro = int.Parse(linha["nlivro"].ToString());
+                string nome = linha["nome"].ToString();
+                int ano = int.Parse(linha["ano"].ToString());
+                DateTime data = DateTime.Parse(linha["data_aquisicao"].ToString());
+                decimal preco = decimal.Parse(linha["preco"].ToString());
+                string capa = linha["capa"].ToString();
+                bool estado = bool.Parse(linha["estado"].ToString());
+                C_Livro novo = new C_Livro(nlivro, nome, ano, data, preco, capa, estado);
+                lista.Add(novo);
+            }
+            return lista;
+        }
+        //nr de leitores
+        public static int NrLivros(BaseDados bd)
+        {
+            DataTable dados = bd.devolveSQL("Select count(*) FROM Livros");
+            int nr = int.Parse(dados.Rows[0][0].ToString());
+            return nr;
+        }
+        public override string ToString()
+        {
+            return this.nome;
         }
     }
 }
