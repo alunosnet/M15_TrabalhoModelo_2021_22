@@ -11,8 +11,10 @@
     <Grid>
         <Label Content="Leitor" HorizontalAlignment="Left" Margin="120,80,0,0" VerticalAlignment="Top"></Label>
         <Label Content="Livro" HorizontalAlignment="Left" Margin="120,120,0,0" VerticalAlignment="Top"></Label>
-        <ComboBox Name="cbLeitores" HorizontalAlignment="Left" Margin="200,80,0,0" VerticalAlignment="Top"></ComboBox>
-        <ComboBox Name="cbLivros" HorizontalAlignment="Left" Margin="200,120,0,0" VerticalAlignment="Top"></ComboBox>
+        <ComboBox Width="200" Name="cbLeitores" HorizontalAlignment="Left" Margin="200,80,0,0" VerticalAlignment="Top"></ComboBox>
+        <ComboBox Width="200" Name="cbLivros" HorizontalAlignment="Left" Margin="200,120,0,0" VerticalAlignment="Top"></ComboBox>
         <Button Click="Button_Click" Content="Emprestar" HorizontalAlignment="Left" Margin="200,160,0,0" VerticalAlignment="top"></Button>
+        <Button Click="Button_Click_1" Name="btDevolver" Content="Devolver" HorizontalAlignment="Left" Margin="200,200,0,0" VerticalAlignment="top"></Button>
+        <DataGrid SelectionChanged="DGEmprestimos_SelectionChanged" Name="DGEmprestimos" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="420,60,0,0" Width="300" Height="200"></DataGrid>
     </Grid>
 </Page>

@@ -27,6 +27,13 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
             this.bd = bd;
             AtualizaCBLeitores();
             AtualizaCBLivros();
+            btDevolver.Visibility = Visibility.Hidden;
+            AtualizaGrid();
+        }
+
+        private void AtualizaGrid()
+        {
+            DGEmprestimos.ItemsSource = C_Emprestimo.ListaEmprestimosPorConcluir(bd);
         }
 
         private void AtualizaCBLivros()
@@ -52,6 +59,17 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
             emprestimo.Adicionar(bd);
             AtualizaCBLivros();
             AtualizaCBLeitores();
+            AtualizaGrid();
+        }
+
+        private void DGEmprestimos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

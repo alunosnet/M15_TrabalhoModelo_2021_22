@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -23,6 +25,18 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
             this.estado = true;
             this.data_emprestimo = DateTime.Now;
             this.data_devolve = data_emprestimo.AddDays(10);
+        }
+
+        public C_Emprestimo(int nemprestimo, int nleitor, string nomeLeitor, int nlivro, string nomeLivro, DateTime data_emprestimo, DateTime data_devolve, bool estado)
+        {
+            this.nemprestimo = nemprestimo;
+            this.nomeLeitor = nomeLeitor;
+            this.nlivro = nlivro;
+            this.nleitor = nleitor;
+            this.nomeLivro = nomeLivro;
+            this.data_emprestimo = data_emprestimo;
+            this.data_devolve = data_devolve;
+            this.estado = estado;
         }
 
         public void Adicionar(BaseDados bd)
@@ -71,6 +85,27 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
             bd.executaSQL(sql, null, transacao);
             //commit
             transacao.Commit();
+        }
+
+        internal static IEnumerable ListaEmprestimosPorConcluir(BaseDados bd)
+        {
+            string sql = "SELECT * FROM Emprestimos WHERE estado=1";
+            var dados = bd.devolveSQL(sql);
+            List<C_Emprestimo> lista = new List<C_Emprestimo>();
+            foreach(DataRow linha in dados.Rows)
+            {
+                int nemprestimo = int.Parse(linha["nemprestimo"].ToString());
+                int nleitor = int.Parse(linha["nleitor"].ToString());
+                int nlivro = int.Parse(linha["nlivro"].ToString());
+                DateTime data_emp = DateTime.Parse(linha["data_emprestimo"].ToString());
+                DateTime data_devolve = DateTime.Parse(linha["data_devolve"].ToString());
+                bool estado = bool.Parse(linha["estado"].ToString());
+                //TODO: mostrar nome do leitor e nome livro
+                C_Emprestimo emp = new C_Emprestimo(nemprestimo, nleitor, "", 
+                    nlivro, "", data_emp, data_devolve, estado);
+                lista.Add(emp);
+            }
+            return lista;
         }
     }
 }

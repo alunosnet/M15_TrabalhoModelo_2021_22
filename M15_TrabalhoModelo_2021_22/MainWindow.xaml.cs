@@ -1,4 +1,5 @@
-﻿using M15_TrabalhoModelo_2021_22.Leitores;
+﻿using M15_TrabalhoModelo_2021_22.Emprestimos;
+using M15_TrabalhoModelo_2021_22.Leitores;
 using M15_TrabalhoModelo_2021_22.Livros;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,17 @@ namespace M15_TrabalhoModelo_2021_22
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
             _NavigationFrame.Content = new Livro(bd);
+
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            _NavigationFrame.Content = new Emprestimo(bd);
+
+        }
+
+        private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+        {
 
         }
     }
