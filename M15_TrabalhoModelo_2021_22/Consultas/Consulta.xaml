@@ -1,0 +1,20 @@
+﻿<Page x:Class="M15_TrabalhoModelo_2021_22.Consultas.Consulta"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:M15_TrabalhoModelo_2021_22.Consultas"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Consulta">
+
+    <Grid>
+        <ComboBox SelectionChanged="cbConsultas_SelectionChanged" Width="300" Name="cbConsultas" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <ComboBoxItem Content="Consulta 1"/>
+            <ComboBoxItem Content="Consulta 2"/>
+        </ComboBox>
+        <DataGrid Name="DGConsultas" AutoGenerateColumns="True"
+                  ItemsSource="{Binding}"
+                  Margin="0,30,0,0"></DataGrid>
+    </Grid>
+</Page>

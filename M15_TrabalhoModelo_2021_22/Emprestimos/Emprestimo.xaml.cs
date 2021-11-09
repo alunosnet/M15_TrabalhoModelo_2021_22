@@ -64,12 +64,17 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
 
         private void DGEmprestimos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            btDevolver.Visibility = Visibility.Visible;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
+            C_Emprestimo emprestimo = (C_Emprestimo)DGEmprestimos.SelectedItem;
+            if (emprestimo == null) return;
+            emprestimo.Receber(bd);
+            AtualizaCBLivros();
+            AtualizaGrid();
+            btDevolver.Visibility = Visibility.Hidden;
         }
     }
 }

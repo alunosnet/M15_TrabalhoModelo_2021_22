@@ -1,4 +1,5 @@
-﻿using M15_TrabalhoModelo_2021_22.Emprestimos;
+﻿using M15_TrabalhoModelo_2021_22.Consultas;
+using M15_TrabalhoModelo_2021_22.Emprestimos;
 using M15_TrabalhoModelo_2021_22.Leitores;
 using M15_TrabalhoModelo_2021_22.Livros;
 using System;
@@ -27,6 +28,7 @@ namespace M15_TrabalhoModelo_2021_22
         public MainWindow()
         {
             InitializeComponent();
+            _NavigationFrame.Content = new Consulta(bd);
         }
         //Leitores
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -53,7 +55,8 @@ namespace M15_TrabalhoModelo_2021_22
 
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
-
+            _NavigationFrame.Content = new Consulta(bd);
+            
         }
     }
 }

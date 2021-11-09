@@ -26,6 +26,9 @@ namespace M15_TrabalhoModelo_2021_22.Leitores
         {
             string sql = $@"INSERT INTO Leitores(nome,data_nasc,fotografia,estado)
                             VALUES (@nome,@data_nasc,@fotografia,@estado)";
+            if(fotografia==null)
+                sql= $@"INSERT INTO Leitores(nome,data_nasc,estado)
+                            VALUES (@nome,@data_nasc,@estado)";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter()

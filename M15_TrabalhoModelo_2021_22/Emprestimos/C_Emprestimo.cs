@@ -87,9 +87,53 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
             transacao.Commit();
         }
 
+        internal void Receber(BaseDados bd)
+        {
+            //iniciar transação
+            SqlTransaction transacao = bd.IniciarTransacao();
+            string sql = $@"UPDATE Emprestimos
+                                SET data_devolve=@data_devolve,
+                                    estado=@estado
+                            WHERE nemprestimo=@nemprestimo";
+            List<SqlParameter> parametros = new List<SqlParameter>()
+            {
+                new SqlParameter()
+                {
+                    ParameterName="@data_devolve",
+                    SqlDbType=System.Data.SqlDbType.Date,
+                    Value=DateTime.Now
+                },
+                new SqlParameter()
+                {
+                    ParameterName="@estado",
+                    SqlDbType=System.Data.SqlDbType.Bit,
+                    Value=false
+                },
+                new SqlParameter()
+                {
+                    ParameterName="@nemprestimo",
+                    SqlDbType=System.Data.SqlDbType.Int,
+                    Value=this.nemprestimo
+                }
+            };
+            //registar o empréstimo
+            bd.executaSQL(sql, parametros, transacao);
+            //alterar o estado do livro
+            sql = $"UPDATE Livros SET estado=1 WHERE nlivro={this.nlivro}";
+            bd.executaSQL(sql, null, transacao);
+            //commit
+            transacao.Commit();
+        }
+
         internal static IEnumerable ListaEmprestimosPorConcluir(BaseDados bd)
         {
-            string sql = "SELECT * FROM Emprestimos WHERE estado=1";
+            string sql = $@"SELECT Emprestimos.*,
+                    leitores.nome as [NomeLeitor],
+                    livros.nome as [NomeLivro]
+                    FROM Emprestimos 
+                    INNER JOIN Leitores ON emprestimos.nleitor=Leitores.nleitor
+                    INNER JOIN Livros ON emprestimos.nlivro=Livros.nlivro
+                    WHERE emprestimos.estado=1";
             var dados = bd.devolveSQL(sql);
             List<C_Emprestimo> lista = new List<C_Emprestimo>();
             foreach(DataRow linha in dados.Rows)
@@ -100,9 +144,10 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
                 DateTime data_emp = DateTime.Parse(linha["data_emprestimo"].ToString());
                 DateTime data_devolve = DateTime.Parse(linha["data_devolve"].ToString());
                 bool estado = bool.Parse(linha["estado"].ToString());
-                //TODO: mostrar nome do leitor e nome livro
-                C_Emprestimo emp = new C_Emprestimo(nemprestimo, nleitor, "", 
-                    nlivro, "", data_emp, data_devolve, estado);
+                string nomeleitor = linha["NomeLeitor"].ToString();
+                string nomelivro = linha["NomeLivro"].ToString();
+                C_Emprestimo emp = new C_Emprestimo(nemprestimo, nleitor, nomeleitor, 
+                    nlivro, nomelivro, data_emp, data_devolve, estado);
                 lista.Add(emp);
             }
             return lista;
