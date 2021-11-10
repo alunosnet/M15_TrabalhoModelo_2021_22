@@ -171,5 +171,14 @@ namespace M15_TrabalhoModelo_2021_22.Livros
         {
             LimparForm();
         }
+
+        private void DGLivros_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            DataGridTextColumn col = e.Column as DataGridTextColumn;
+            if (col != null && e.PropertyType == typeof(DateTime))
+            {
+                    col.Binding = new Binding(e.PropertyName) { StringFormat = "dd-MM-yyyy" };
+            }
+        }
     }
 }

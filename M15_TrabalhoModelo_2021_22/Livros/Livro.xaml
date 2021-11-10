@@ -21,7 +21,7 @@
         <Button Click="Button_Click" Content="..." HorizontalAlignment="Left" Margin="40,310,0,0" VerticalAlignment="Top" Width="50" />
         <Button Name="btAdicionar" Click="btAdicionar_Click" Content="Adicionar" HorizontalAlignment="Left" Margin="34,363,0,0" VerticalAlignment="Top" Width="90" Height="30" />
         <TextBox x:Name="tbPreco" HorizontalAlignment="Left" Margin="146,221,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <DataGrid SelectionChanged="DGLivros_SelectionChanged" Name="DGLivros" Width="400" Height="200" VerticalAlignment="Top" HorizontalAlignment="left" Margin="300,60,0,0"  ></DataGrid>
+        <DataGrid AutoGeneratingColumn="DGLivros_AutoGeneratingColumn" SelectionChanged="DGLivros_SelectionChanged" Name="DGLivros" Width="400" Height="200" VerticalAlignment="Top" HorizontalAlignment="left" Margin="300,60,0,0"  ></DataGrid>
         <Button Click="btRemover_Click" Name="btRemover" Content="Remover" HorizontalAlignment="left" VerticalAlignment="Top" Margin="300,280,0,0"></Button>
         <Button Click="btAtualizar_Click" Name="btAtualizar" Content="Atualizar" HorizontalAlignment="left" VerticalAlignment="Top" Margin="400,280,0,0"></Button>
         <Button Click="btCancelar_Click" ToolTip="Limpa todos os campos do formulário" Name="btCancelar" Content="Cancelar" HorizontalAlignment="left" VerticalAlignment="Top" Margin="500,280,0,0"></Button>

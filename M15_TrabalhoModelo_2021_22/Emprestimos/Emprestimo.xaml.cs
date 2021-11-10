@@ -33,7 +33,10 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
 
         private void AtualizaGrid()
         {
-            DGEmprestimos.ItemsSource = C_Emprestimo.ListaEmprestimosPorConcluir(bd);
+            if (ckTodos.IsChecked == false)
+                DGEmprestimos.ItemsSource = C_Emprestimo.ListaEmprestimosPorConcluir(bd);
+            else
+                DGEmprestimos.ItemsSource = C_Emprestimo.ListaEmprestimosTodos(bd);
         }
 
         private void AtualizaCBLivros()
@@ -64,7 +67,8 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
 
         private void DGEmprestimos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            btDevolver.Visibility = Visibility.Visible;
+            if(ckTodos.IsChecked==false)
+                btDevolver.Visibility = Visibility.Visible;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -75,6 +79,21 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
             AtualizaCBLivros();
             AtualizaGrid();
             btDevolver.Visibility = Visibility.Hidden;
+        }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            AtualizaGrid();
+        }
+
+        private void DGEmprestimos_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            DataGridTextColumn col = e.Column as DataGridTextColumn;
+            if (col != null && e.PropertyType == typeof(DateTime))
+            {
+               // if (col.Header.ToString() == "data_nascimento")
+                    col.Binding = new Binding(e.PropertyName) { StringFormat = "dd-MM-yyyy" };
+            }
         }
     }
 }

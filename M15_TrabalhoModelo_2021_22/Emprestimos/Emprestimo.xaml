@@ -15,6 +15,7 @@
         <ComboBox Width="200" Name="cbLivros" HorizontalAlignment="Left" Margin="200,120,0,0" VerticalAlignment="Top"></ComboBox>
         <Button Click="Button_Click" Content="Emprestar" HorizontalAlignment="Left" Margin="200,160,0,0" VerticalAlignment="top"></Button>
         <Button Click="Button_Click_1" Name="btDevolver" Content="Devolver" HorizontalAlignment="Left" Margin="200,200,0,0" VerticalAlignment="top"></Button>
-        <DataGrid SelectionChanged="DGEmprestimos_SelectionChanged" Name="DGEmprestimos" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="420,60,0,0" Width="300" Height="200"></DataGrid>
+        <DataGrid AutoGeneratingColumn="DGEmprestimos_AutoGeneratingColumn" SelectionChanged="DGEmprestimos_SelectionChanged" Name="DGEmprestimos" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="420,60,0,0" Width="300" Height="200"></DataGrid>
+        <CheckBox Name="ckTodos" Click="CheckBox_Click" Content="Listar todos os empréstimos" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="420,280,0,0"/>
     </Grid>
 </Page>

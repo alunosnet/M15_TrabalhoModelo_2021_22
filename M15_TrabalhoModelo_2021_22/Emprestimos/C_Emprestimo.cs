@@ -26,7 +26,14 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
             this.data_emprestimo = DateTime.Now;
             this.data_devolve = data_emprestimo.AddDays(10);
         }
-
+        public C_Emprestimo(int nleitor, int nlivro,DateTime dataemp)
+        {
+            this.nleitor = nleitor;
+            this.nlivro = nlivro;
+            this.estado = true;
+            this.data_emprestimo =dataemp;
+            this.data_devolve = data_emprestimo.AddDays(10);
+        }
         public C_Emprestimo(int nemprestimo, int nleitor, string nomeLeitor, int nlivro, string nomeLivro, DateTime data_emprestimo, DateTime data_devolve, bool estado)
         {
             this.nemprestimo = nemprestimo;
@@ -147,6 +154,32 @@ namespace M15_TrabalhoModelo_2021_22.Emprestimos
                 string nomeleitor = linha["NomeLeitor"].ToString();
                 string nomelivro = linha["NomeLivro"].ToString();
                 C_Emprestimo emp = new C_Emprestimo(nemprestimo, nleitor, nomeleitor, 
+                    nlivro, nomelivro, data_emp, data_devolve, estado);
+                lista.Add(emp);
+            }
+            return lista;
+        }
+        internal static IEnumerable ListaEmprestimosTodos(BaseDados bd)
+        {
+            string sql = $@"SELECT Emprestimos.*,
+                    leitores.nome as [NomeLeitor],
+                    livros.nome as [NomeLivro]
+                    FROM Emprestimos 
+                    INNER JOIN Leitores ON emprestimos.nleitor=Leitores.nleitor
+                    INNER JOIN Livros ON emprestimos.nlivro=Livros.nlivro";
+            var dados = bd.devolveSQL(sql);
+            List<C_Emprestimo> lista = new List<C_Emprestimo>();
+            foreach (DataRow linha in dados.Rows)
+            {
+                int nemprestimo = int.Parse(linha["nemprestimo"].ToString());
+                int nleitor = int.Parse(linha["nleitor"].ToString());
+                int nlivro = int.Parse(linha["nlivro"].ToString());
+                DateTime data_emp = DateTime.Parse(linha["data_emprestimo"].ToString());
+                DateTime data_devolve = DateTime.Parse(linha["data_devolve"].ToString());
+                bool estado = bool.Parse(linha["estado"].ToString());
+                string nomeleitor = linha["NomeLeitor"].ToString();
+                string nomelivro = linha["NomeLivro"].ToString();
+                C_Emprestimo emp = new C_Emprestimo(nemprestimo, nleitor, nomeleitor,
                     nlivro, nomelivro, data_emp, data_devolve, estado);
                 lista.Add(emp);
             }

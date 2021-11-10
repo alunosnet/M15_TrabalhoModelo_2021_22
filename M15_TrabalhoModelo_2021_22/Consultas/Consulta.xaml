@@ -12,6 +12,17 @@
         <ComboBox SelectionChanged="cbConsultas_SelectionChanged" Width="300" Name="cbConsultas" VerticalAlignment="Top" HorizontalAlignment="Left">
             <ComboBoxItem Content="Consulta 1"/>
             <ComboBoxItem Content="Consulta 2"/>
+            <ComboBoxItem Content="Consulta 3"/>
+            <ComboBoxItem Content="Consulta 4"/>
+            <ComboBoxItem Content="Consulta 5"/>
+            <ComboBoxItem Content="Consulta 6"/>
+            <ComboBoxItem Content="Consulta 7"/>
+            <ComboBoxItem Content="Consulta 8"/>
+            <ComboBoxItem Content="Consulta 9"/>
+            <ComboBoxItem Content="Consulta 10"/>
+            <ComboBoxItem Content="Consulta 11"/>
+            <ComboBoxItem Content="Consulta 12"/>
+            <ComboBoxItem Content="Consulta 13"/>
         </ComboBox>
         <DataGrid Name="DGConsultas" AutoGenerateColumns="True"
                   ItemsSource="{Binding}"
